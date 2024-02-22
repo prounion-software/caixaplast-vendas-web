@@ -26,3 +26,24 @@ Outras funcionalidades importantes incluem:
 - Possibilidade de pré-cadastro de clientes, com análise posterior pelo ERP para completar o cadastro.
 
 Este sistema irá simplificar e otimizar significativamente o processo de vendas da **CaixaPlast**, oferecendo uma experiência moderna e ágil para seus representantes e vendedores.
+
+## Os pontos chave do projeto são:
+
+### Cadastros
+
+- [Produtos](pontos-chave/PRODUTOS.md)
+- Representantes
+- Tabelas de preços
+- Carteiras de clientes
+- Pré-cadastro de clientes
+
+### Pedidos
+
+- Pedidos
+- Orçamentos
+- Tracking de pedidos
+- Duplicação de pedidos
+
+### Integração
+
+- API Rest
