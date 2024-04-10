@@ -31,19 +31,31 @@ Este sistema irá simplificar e otimizar significativamente o processo de vendas
 
 ### Cadastros
 
-- [Produtos](pontos-chave/PRODUTOS.md)
+- [Produtos](cadastros/PRODUTOS.md)
 - Representantes
-- Tabelas de preços
+- [Tabelas de preços](cadastros/TABELA_PRECOS.md)
 - Carteiras de clientes
 - Pré-cadastro de clientes
 
 ### Pedidos
 
-- Pedidos
+- [Pedidos](pedidos/PEDIDOS.md)
 - Orçamentos
 - Tracking de pedidos
 - Duplicação de pedidos
 
+### Fluxo de utilização pelo usuário
+
+- Inclusão de pedido ou orçamento
+- Conversão de orçamento em pedido
+- Acompanhamento (Tracking)
+- Edição de pedido ainda não aprovado
+
+### Notificações e comunicação (E-mails)
+
+- Alerta de novo pedido
+
 ### Integração
 
 - API Rest
+- Filas

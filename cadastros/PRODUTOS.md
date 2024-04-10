@@ -1,5 +1,9 @@
 # PRODUTOS
 
+A origem do cadastro dos produtos é sempre do ERP, assim como os cadastros auxiliares como grupos e subgrupos, nessa aplicação não há como cadastrar nada disso diretamente.
+
+Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na interface de usuário. Pois os dados de produtos e relacionados serão utilizados apenas na inclusão de pedidos e orçamentos.
+
 O cadastro do produto consiste na seguinte estrutura:
 
 ```ts
