@@ -106,6 +106,7 @@ Isso permite que o armazenamento seja feito em **integer** ao invés de **float*
 {
   "idProduto": 0,
   "preco": 0,
+  "unidade": "",
   "ate1": 0,
   "preco1": 0,
   "ate2": 0,
