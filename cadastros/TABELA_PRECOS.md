@@ -39,33 +39,35 @@ Isso permite que o armazenamento seja feito em **integer** ao invés de **float*
 > Uma tabela de preços pode ter menos itens do que o cadastro de produtos, é possível que a equipe responsável monte uma tabela com poucos produtos apenas por uma questão de organização e negociação.
 > Na inclusão do pedido, apenas os itens precificados na tabela do cliente deverão ser listados
 
+A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, portanto não precisamos criar uma área de manutenção na aplicação.
+
 ---
 
 ## Estrutura de dados
 
-### Tabela de preços
+### Tabela de preços: **tabelas_precos**
 
-| Dado         |  Tipo  | Descrição                               | Campo na Tabela | Permite Nulo |
-| ------------ | :----: | --------------------------------------- | --------------- | :----------: |
-| id da tabela | Número | ID interno na aplicação                 | tabela_preco_id |     Não      |
-| id externo   | Texto  | ID no ERP                               | id_externo      |     Não      |
-| descrição    | Texto  | Descrição da tabela                     | descricao       |     Não      |
-| tipo         |  Enum  | Tipo da tabela (Simples/Por Quantidade) | tipo            |     Não      |
+| Dado         |    Tipo     | Descrição                               | Campo na Tabela | Permite Nulo |
+| ------------ | :---------: | --------------------------------------- | --------------- | :----------: |
+| id da tabela |   Número    | ID interno na aplicação                 | tabela_preco_id |     Não      |
+| id externo   | Texto (10)  | ID no ERP                               | id_externo      |     Não      |
+| descrição    | Texto (100) | Descrição da tabela                     | descricao       |     Não      |
+| tipo         |    Enum     | Tipo da tabela (Simples/Por Quantidade) | tipo            |     Não      |
 
-### Itens da tabela de preços
+### Itens da tabela de preços: **tabelas_precos_itens**
 
-| Dado          |  Tipo  | Descrição                               | Campo na Tabela | Permite Nulo |
-| ------------- | :----: | --------------------------------------- | --------------- | :----------: |
-| id da tabela  | Número | ID interno da tabela                    | tabela_preco_id |     Não      |
-| id do produto | Número | ID interno do produto                   | produto_id      |     Não      |
-| unidade       | Texto  | Unidade do produto                      | unidade         |     Não      |
-| preço         | Número | Preço padrão do produto                 | preco           |     Não      |
-| até 1         | Número | Primeira quantidade "Até X"             | ate_1           |     Não      |
-| preço 1       | Número | Preço do produto da primeira quantidade | preco_1         |     Não      |
-| até 2         | Número | Segunda quantidade "Até X"              | ate_2           |     Sim      |
-| preço 2       | Número | Preço do produto da segunda quantidade  | preco_2         |     Sim      |
-| até 3         | Número | Terceira quantidade "Até X"             | ate_3           |     Sim      |
-| preço 3       | Número | Preço do produto da terceira quantidade | preco_3         |     Sim      |
+| Dado          |    Tipo    | Descrição                               | Campo na Tabela | Permite Nulo |
+| ------------- | :--------: | --------------------------------------- | --------------- | :----------: |
+| id da tabela  |   Número   | ID interno da tabela                    | tabela_preco_id |     Não      |
+| id do produto |   Número   | ID interno do produto                   | produto_id      |     Não      |
+| unidade       | Texto (10) | Unidade do produto                      | unidade         |     Não      |
+| preço         |   Número   | Preço padrão do produto                 | preco           |     Não      |
+| até 1         |   Número   | Primeira quantidade "Até X"             | ate_1           |     Não      |
+| preço 1       |   Número   | Preço do produto da primeira quantidade | preco_1         |     Não      |
+| até 2         |   Número   | Segunda quantidade "Até X"              | ate_2           |     Sim      |
+| preço 2       |   Número   | Preço do produto da segunda quantidade  | preco_2         |     Sim      |
+| até 3         |   Número   | Terceira quantidade "Até X"             | ate_3           |     Sim      |
+| preço 3       |   Número   | Preço do produto da terceira quantidade | preco_3         |     Sim      |
 
 ## Representação em JSON
 
