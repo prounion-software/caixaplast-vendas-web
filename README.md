@@ -27,6 +27,12 @@ Outras funcionalidades importantes incluem:
 
 Este sistema irá simplificar e otimizar significativamente o processo de vendas da **CaixaPlast**, oferecendo uma experiência moderna e ágil para seus representantes e vendedores.
 
+## Arquitetura
+
+Este projeto segue os padrões mais comuns de desenvolvimento de aplicações web no modelo SaaS.
+
+Para uma visão geral sobre a arquitetura, veja o [System Design](arquitetura/SYSTEM_DESIGN.md) e os [padrões adotados](arquitetura/PADROES.md) do projeto.
+
 ## Os pontos chave do projeto são:
 
 ### Cadastros
