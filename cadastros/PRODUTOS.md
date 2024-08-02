@@ -104,6 +104,8 @@ Um produto pode ser cadastrado com todos seus relacionamentos preenchidos ou nã
 
 Além disso, o relacionamento com outras entidades, no cadastro e atualização se darão pelo id dessas entidades.
 
+**PRODUTOS**
+
 `POST /products`
 
 ```ts
@@ -189,8 +191,10 @@ export type ProductPostPayload = {
 
 `PATCH /product/{:id([0-9]+)}`
 
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
 ```ts
-export type ProductBarCodePatchPayload = Partial<ProductBarCodePostPayload>;
+export type ProductPatchPayload = Partial<ProductPostPayload>;
 ```
 
 ```ts
@@ -203,6 +207,12 @@ export type ProductDimension = {
 };
 ```
 
+---
+
+**TIPOS DE MATERIAL**
+
+Estrutura interna da aplicação.
+
 ```ts
 export type ProductMaterialType = {
   id: number; // id do tipo de material na aplicação
@@ -210,6 +220,40 @@ export type ProductMaterialType = {
   description: string; // descrição do tipo do material
 };
 ```
+
+#### Payload de cadastro
+
+`POST products/material-types`
+
+```ts
+export type ProductMaterialTypePostPayload = {
+  externalId: string; // id do tipo de material no ERP
+  description: string; // descrição do tipo do material
+};
+```
+
+```json
+// exemplo
+{
+  "externalId": "12",
+  "description": "Chapa de Aço de 1mm"
+}
+```
+
+`PATCH products/material-type/{:id([0-9]+)}`
+
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
+```ts
+export type ProductMaterialTypePatchPayload =
+  Partial<ProductMaterialTypePostPayload>;
+```
+
+---
+
+**GRUPO DE PRODUTOS**
+
+Estrutura interna da aplicação.
 
 ```ts
 export type ProductGroup = {
@@ -219,22 +263,83 @@ export type ProductGroup = {
 };
 ```
 
+#### Payload de cadastro
+
+`POST /products/groups`
+
 ```ts
-export type ProductSubGroup = {
-  id: number; // id do sub-grupo na aplicação
-  externalId: string; // id do sub-grupo no ERP
-  groupId: number; // id interno do grupo na aplicação
+export type ProductGroupPostPayload = {
+  externalId: string; // id do grupo no ERP
   description: string; // descrição do grupo
 };
 ```
 
+```json
+// exemplo
+{
+  "externalId": "g47",
+  "description": "PRODUTOS DE LIMPEZA"
+}
+```
+
+`PATCH products/group/{:id([0-9]+)}`
+
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
 ```ts
-export type ProductImagePostPayload = {
-  externalId: string;
-  url: string;
-  sequence: number;
+export type ProductGroupPatchPayload = Partial<ProductGroupPostPayload>;
+```
+
+---
+
+**SUB GRUPOS DE PRODUTOS**
+
+Estrutura interna da aplicação.
+
+```ts
+export type ProductSubGroup = {
+  id: number; // id do sub-grupo na aplicação
+  externalId: string; // id do sub-grupo no ERP
+  description: string; // descrição do grupo
 };
 ```
+
+#### Payload de cadastro
+
+Todo subgrupo pertence a um grupo, atente-se para a segmentação da URL.
+
+`POST /products/group/{:groupId([0-9]+)}/sub-groups`
+
+```ts
+export type ProductSubGroupPostPayload = {
+  externalId: string; // id do sub-grupo no ERP
+  description: string; // descrição do grupo
+};
+```
+
+```json
+// exemplo
+{
+  "externalId": "sg99",
+  "description": "DETERGENTE"
+}
+```
+
+`PATCH /products/group/{:groupId([0-9]+)}/sub-group/{:id([0-9]+)}`
+
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
+```ts
+export type ProductSubGroupPatchPayload = Partial<ProductSubGroupPostPayload>;
+```
+
+---
+
+**IMAGEM DOS PRODUTOS**
+
+Por enquanto não temos a inteção de armazenar as imagens internamente na aplicação, por isso recebemos uma URL pública para essa imagem.
+
+Estrutura interna na aplicação:
 
 ```ts
 export type ProductImage = {
@@ -245,13 +350,42 @@ export type ProductImage = {
 };
 ```
 
+#### Payload de cadastro
+
+Toda imagem pertence a um produto, atente-se para a segmentação da URL.
+
+`POST /product/{:productId([0-9]+)}/images`
+
 ```ts
-export type ProductBarCodePostPayload = {
-  barCode: string; // código de barras
-  unit: string; // Tipo de unidade PÇ (peça), PCT (pacote), BB (bombona), LT (lata) ...
-  quantity: number; // quantidade unitário do produto nesta embalagem
+export type ProductImagePostPayload = {
+  externalId: string;
+  url: string;
+  sequence: number;
 };
 ```
+
+```json
+// exemplo
+{
+  "externalId": "img-1",
+  "url": "https://images.exemplo.com/img.png",
+  "sequence": 1
+}
+```
+
+`PATCH /product/{:productId([0-9]+)}/image/{:id([0-9]+)}`
+
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
+```ts
+export type ProductImagePatchPayload = Partial<ProductImagePostPayload>;
+```
+
+---
+
+**CÓDIGOS DE BARRAS**
+
+Estrutura interna na aplicação
 
 ```ts
 export type ProductBarCode = {
@@ -260,4 +394,26 @@ export type ProductBarCode = {
   unit: string; // Tipo de unidade PÇ (peça), PCT (pacote), BB (bombona), LT (lata) ...
   quantity: number; // quantidade unitário do produto nesta embalagem
 };
+```
+
+#### Payload de cadastro
+
+Todo código de barras pertence a um produto, atente-se para a segmentação da URL.
+
+`POST /product/{:productId([0-9]+)}/bar-codes`
+
+```ts
+export type ProductBarCodePostPayload = {
+  barCode: string; // código de barras
+  unit: string; // Tipo de unidade PÇ (peça), PCT (pacote), BB (bombona)...
+  quantity: number; // quantidade unitário do produto nesta embalagem
+};
+```
+
+`PATCH /product/{:productId([0-9]+)}/bar-code/{:id([0-9]+)}`
+
+O processo de patch é praticamente a mesma coisa que o post, porém todos os campos são opcionais no payload, o que não foi informado não será atualizado.
+
+```ts
+export type ProductBarCodePatchPayload = Partial<ProductBarCodePostPayload>;
 ```

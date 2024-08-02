@@ -78,6 +78,6 @@ Caso o registro em questão não exista, deve ser retornado status 404.
 
 **Outros métodos**
 
-- Inclusão de novos registros: **POST**
+- Inclusão de novos registros: **POST** (deve retornar status 201 em caso de sucesso)
 - Atualizar registros existentes, toda atualização pode ser parcial: **PATCH**
 - Remover registros (soft delete): **DELETE**
