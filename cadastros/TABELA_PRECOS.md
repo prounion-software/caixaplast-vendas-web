@@ -36,7 +36,7 @@ Isso permite que o armazenamento seja feito em **integer** ao invés de **float*
 
 > **Importante**
 >
-> Uma tabela de preços pode ter menos itens do que o cadastro de produtos, é possível que a equipe responsável monte uma tabela com poucos produtos apenas por uma questão de organização e negociação.
+> Uma tabela de preços **pode ter menos itens do que o cadastro de produtos**, é possível que a equipe responsável monte uma tabela com poucos produtos apenas por uma questão de organização e negociação.
 > Na inclusão do pedido, apenas os itens precificados na tabela do cliente deverão ser listados
 
 A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, portanto não precisamos criar uma área de manutenção na aplicação.
@@ -45,29 +45,29 @@ A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, porta
 
 ## Estrutura de dados
 
-### Tabela de preços: **tabelas_precos**
+### Tabela de preços: **price_tables**
 
 | Dado         |    Tipo     | Descrição                               | Campo na Tabela | Permite Nulo |
 | ------------ | :---------: | --------------------------------------- | --------------- | :----------: |
-| id da tabela |   Número    | ID interno na aplicação                 | tabela_preco_id |     Não      |
-| id externo   | Texto (10)  | ID no ERP                               | id_externo      |     Não      |
-| descrição    | Texto (100) | Descrição da tabela                     | descricao       |     Não      |
-| tipo         |    Enum     | Tipo da tabela (Simples/Por Quantidade) | tipo            |     Não      |
+| id da tabela |   Número    | ID interno na aplicação                 | price_table_id  |     Não      |
+| id externo   | Texto (10)  | ID no ERP                               | external_id     |     Não      |
+| descrição    | Texto (100) | Descrição da tabela                     | description     |     Não      |
+| tipo         |    Enum     | Tipo da tabela (Simples/Por Quantidade) | type            |     Não      |
 
-### Itens da tabela de preços: **tabelas_precos_itens**
+### Itens da tabela de preços: **price_table_itens**
 
 | Dado          |    Tipo    | Descrição                               | Campo na Tabela | Permite Nulo |
 | ------------- | :--------: | --------------------------------------- | --------------- | :----------: |
-| id da tabela  |   Número   | ID interno da tabela                    | tabela_preco_id |     Não      |
-| id do produto |   Número   | ID interno do produto                   | produto_id      |     Não      |
-| unidade       | Texto (10) | Unidade do produto                      | unidade         |     Não      |
-| preço         |   Número   | Preço padrão do produto                 | preco           |     Não      |
-| até 1         |   Número   | Primeira quantidade "Até X"             | ate_1           |     Não      |
-| preço 1       |   Número   | Preço do produto da primeira quantidade | preco_1         |     Não      |
-| até 2         |   Número   | Segunda quantidade "Até X"              | ate_2           |     Sim      |
-| preço 2       |   Número   | Preço do produto da segunda quantidade  | preco_2         |     Sim      |
-| até 3         |   Número   | Terceira quantidade "Até X"             | ate_3           |     Sim      |
-| preço 3       |   Número   | Preço do produto da terceira quantidade | preco_3         |     Sim      |
+| id da tabela  |   Número   | ID interno da tabela                    | price_table_id  |     Não      |
+| id do produto |   Número   | ID interno do produto                   | product_id      |     Não      |
+| unidade       | Texto (10) | Unidade do produto                      | unit            |     Não      |
+| preço         |   Número   | Preço padrão do produto                 | price           |     Não      |
+| até 1         |   Número   | Primeira quantidade "Até X"             | until_1         |     Não      |
+| preço 1       |   Número   | Preço do produto da primeira quantidade | price_1         |     Não      |
+| até 2         |   Número   | Segunda quantidade "Até X"              | until_2         |     Sim      |
+| preço 2       |   Número   | Preço do produto da segunda quantidade  | price_2         |     Sim      |
+| até 3         |   Número   | Terceira quantidade "Até X"             | until_3         |     Sim      |
+| preço 3       |   Número   | Preço do produto da terceira quantidade | price_3         |     Sim      |
 
 ## Representação em JSON
 
@@ -75,26 +75,26 @@ A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, porta
 
 #### Payload de cadastro
 
-`// POST /tabelas-preco`
+`// POST /price-tables`
 
 ```json
 {
-  "idExterno": "",
-  "descricao": "",
-  "tipo": 0
+  "external_id": "",
+  "description": "",
+  "type": 0
 }
 ```
 
 #### Payload de retorno de cadastro ou leitura
 
-`// GET /tabelas-preco/{id}`
+`// GET /price-table/{id}`
 
 ```json
 {
   "id": 0,
-  "idExterno": "",
-  "descricao": "",
-  "tipo": 0
+  "externalId": "",
+  "description": "",
+  "type": 0
 }
 ```
 
@@ -102,18 +102,18 @@ A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, porta
 
 ### Payload de cadastro
 
-`// POST /tabela-preco/{id}/itens`
+`// POST /price-table/{id}/itens`
 
 ```json
 {
-  "idProduto": 0,
-  "preco": 0,
-  "unidade": "",
-  "ate1": 0,
-  "preco1": 0,
-  "ate2": 0,
-  "preco2": 0,
-  "ate3": 0,
-  "preco3": 0
+  "productId": 0,
+  "price": 0,
+  "unit": "",
+  "until1": 0,
+  "price1": 0,
+  "until2": 0,
+  "price2": 0,
+  "until3": 0,
+  "price3": 0
 }
 ```
