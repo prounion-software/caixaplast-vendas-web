@@ -16,7 +16,7 @@ Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na inter
 | Descrição completa             | Texto (500) | full_description       |     Sim      |
 | Descrição reduzida             | Texto (500) | short_description      |     Sim      |
 | Código de barras               | Texto (20)  | bar_code               |     Sim      |
-| Unidade de controle            | Texto (10)  | control_unit           |     Não      |
+| Unidade de controle            | Texto (10)  | stock_unit             |     Não      |
 | Unidade de venda               | Texto (10)  | seles_unit             |     Não      |
 | Altura em milímetros           |   Número    | height                 |     Sim      |
 | Largura em milímetros          |   Número    | width                  |     Sim      |
@@ -86,7 +86,7 @@ export type Product = {
   shortDescription?: string; // descrição reduzida do produto
   barCodePrincipal: string; // código de barras principal
   units: {
-    control: string; // unidade de controle interno
+    stock: string; // unidade de controle interno
     sales: string; // unidade de venda
   };
   dimensions?: ProductDimension;
@@ -104,7 +104,7 @@ Um produto pode ser cadastrado com todos seus relacionamentos preenchidos ou nã
 
 Além disso, o relacionamento com outras entidades, no cadastro e atualização se darão pelo id dessas entidades.
 
-`// POST /products`
+`POST /products`
 
 ```ts
 export type ProductPostPayload = {
@@ -114,7 +114,7 @@ export type ProductPostPayload = {
   shortDescription?: string; // descrição reduzida do produto
   barCodePrincipal: string; // código de barras principal
   units: {
-    control: string; // unidade de controle interno
+    stock: string; // unidade de controle interno de estoque
     sales: string; // unidade de venda
   };
   dimensions?: ProductDimension;
@@ -135,8 +135,8 @@ export type ProductPostPayload = {
   "shortDescription": "Refri. Fanta Laranja 2L",
   "barCodePrincipal": "7892348967503",
   "units": {
-    "control": "FD", // fardo
-    "sales": "GF" //  garrafa
+    "stock": "FD", // fardo
+    "sales": "GRF" //  garrafa
   },
   "dimensions": {
     "height": 29,
@@ -181,10 +181,16 @@ export type ProductPostPayload = {
   "description": "Fanta Laranja 2L",
   "barCodePrincipal": "7892348967503",
   "units": {
-    "control": "FD", // fardo
-    "sales": "GF" //  garrafa
+    "stock": "FD", // fardo
+    "sales": "GRF" //  garrafa
   }
 }
+```
+
+`PATCH /product/{:id([0-9]+)}`
+
+```ts
+export type ProductBarCodePatchPayload = Partial<ProductBarCodePostPayload>;
 ```
 
 ```ts
