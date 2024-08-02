@@ -18,7 +18,7 @@ Todas as tabelas nesse sistema terão as seguintes colunas:
 | ---------- | -------- | ------------------------------- | ----------- |
 | created_at | DateTime | Data de criação do registro     | Sim         |
 | updated_at | DateTime | Data de atualização do registro | Sim         |
-| deleted_at | DateTime | Data de deleção do registro     | Não         |
+| deleted_at | DateTime | Data de remoção do registro     | Não         |
 
 Na descrição das tabelas nessa documentação, esses campos serão omitidos para evitar repetição, mas devem sempre estar presentes em todas as tabelas de cada entidade.
 
@@ -30,7 +30,7 @@ Dessa forma, quando um registro é "deletado" ele apenas marca o campo `deleted_
 
 Mas esse item pode sim ser listado pela aplicação em algumas situações:
 
-- Acessado diretamente pelo id: `GET /product/1243`, mesmo se o produto de id 1243 estiver marcado como removido, os dados dele devem ser retornados. Até mesmo para que ele possa ser reativado se necesário.
+- Acessado diretamente pelo id: `GET /product/1243`, mesmo se o produto de id 1243 estiver marcado como removido, os dados dele devem ser retornados. Uma vez que ele possa ser reativado se necessário.
 - Em rotas de listagem com o parâmetro `withDeleted` igual a **true** ou **1**: `GET /products?withDeleted=1` ou `GET /products?withDeleted=true`
 
 ## API Rest
@@ -62,7 +62,7 @@ Para rotas de listagens de primeiro nível, todos os resultados devem ser pagina
 - Página (page): 1
 - Resultados por página (perPage): 50
 
-Os dados de paginação devem ser via **query string**, `GET /product?page=2&perPage=30`.
+Os dados de paginação devem ser via **query string**, `GET /products?page=2&perPage=30`.
 
 Mas para listagens que não são de primeiro nível, como `GET /order/234/items` não é necessário paginação, pois estamos listando todos os itens do pedido 234.
 
