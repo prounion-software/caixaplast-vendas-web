@@ -65,3 +65,7 @@ Para uma visão geral sobre a arquitetura, veja o [System Design](arquitetura/SY
 
 - API Rest
 - Filas
+
+### Projetos relacionados
+
+- [API](https://github.com/prounion-software/vendas-web-api)
