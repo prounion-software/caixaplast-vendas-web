@@ -1,31 +1,33 @@
 # TABELA DE PREÇOS
 
-Uma tabela de preços é onde são definidos os preços de um grupo de produtos, em todo cliente há uma referência para uma tabela de preços, na inclusão de pedidos os preços listados com base nessa tabela.
+Uma tabela de preços é onde são definidos os preços de um grupo de produtos, em todo cadastro de cliente há uma referência para uma tabela de preços. É com base nessa associação que serão apresentados os preços no momento da criação dos pedidos.
 
 Há dois tipos de tabelas de preços: **Simples** e **Por Quantidade**
 
-Na **tabela de preços simples**, o preço do produto é uma combinação de produto e unidade, por exemplo:
+Na **tabela de preços simples**, o preço do produto é uma combinação de [produto](./PRODUTOS.md), unidade e [moeda](./MOEDAS.md), por exemplo:
 
-| Produto    | Unidade | Preço    |
-| ---------- | :-----: | -------- |
-| Caixa 15 L |   UN    | R$ 10,00 |
-| Caixa 15 L |   PCT   | R$ 53,00 |
-| Caixa 15 L |   CT    | R$ 60,00 |
-| Caixa 30 L |   UN    | R$ 10,44 |
-| Caixa 30 L |   PCT   | R$ 55,32 |
+| Produto    | Unidade | Moeda | Preço |
+| ---------- | :-----: | :---: | ----- |
+| Caixa 15 L |   UN    |  BRL  | 10,00 |
+| Caixa 15 L |   PCT   |  BRL  | 53,00 |
+| Caixa 15 L |   CT    |  BRL  | 60,00 |
+| Caixa 30 L |   UN    |  USD  | 10,44 |
+| Caixa 30 L |   PCT   |  USD  | 55,32 |
 
 Já na tabela **por quantidade**, há mais um fator determinante para o preço do produto no pedido, que é a quantidade.
 
-Nesse tipo de tabela pode haver até 3 preços diferentes por produto a depender da quantidade solicitada, por exemplo:
+Nesse tipo de tabela pode haver até 4 preços diferentes por produto a depender da quantidade solicitada, por exemplo:
 
-| Produto   | Unidade | Quantidade | Preço    |
-| --------- | ------- | ---------- | -------- |
-| Caixa 3 L | UN      | Até 10     | R$ 1,43  |
-| Caixa 3 L | UN      | Até 50     | R$ 1,30  |
-| Caixa 3 L | UN      | Até 100    | R$ 1,25  |
-| Caixa 3 L | PCT     | Até 10     | R$ 10,12 |
-| Caixa 3 L | PCT     | Até 50     | R$ 9,54  |
-| Caixa 3 L | PCT     | Até 100    | R$ 8,25  |
+| Produto   | Unidade | Quantidade | Moeda | Preço |
+| --------- | ------- | ---------- | :---: | ----- |
+| Caixa 3 L | UN      | Até 10     |  BRL  | 1,43  |
+| Caixa 3 L | UN      | Até 50     |  BRL  | 1,30  |
+| Caixa 3 L | UN      | Até 100    |  BRL  | 1,25  |
+| Caixa 3 L | UN      | Até 200    |  BRL  | 1,10  |
+| Caixa 3 L | PCT     | Até 10     |  BRL  | 10,12 |
+| Caixa 3 L | PCT     | Até 50     |  BRL  | 9,54  |
+| Caixa 3 L | PCT     | Até 100    |  BRL  | 8,25  |
+| Caixa 3 L | PCT     | Até 200    |  BRL  | 8,05  |
 
 Seguindo as boas práticas atuais de mercado, nessa aplicação os preços na base de dados e na comunicação pela API os preços são tratados em centavos, ou seja:
 

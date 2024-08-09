@@ -53,7 +53,7 @@ Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na inter
 | ID no ERP   | Texto (10)  | external_id     |     Não      |
 | Descrição   | Texto (100) | description     |     Não      |
 
-### Tabela de subgrupos de produtos: **products_subgroups**
+### Tabela de subgrupos de produtos: **product_subgroups**
 
 | Dado           |    Tipo     | Campo na Tabela | Permite Nulo |
 | -------------- | :---------: | --------------- | :----------: |
@@ -62,7 +62,7 @@ Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na inter
 | ID no ERP      | Texto (10)  | external_id     |     Não      |
 | Descrição      | Texto (100) | description     |     Não      |
 
-### Tabela de códigos de barras dos produtos: **products_bar_codes**
+### Tabela de códigos de barras dos produtos: **product_bar_codes**
 
 | Dado                |    Tipo    | Campo na Tabela | Permite Nulo |
 | ------------------- | :--------: | --------------- | :----------: |
@@ -70,6 +70,14 @@ Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na inter
 | Código de barras    | Texto (20) | bar_code        |     Não      |
 | Unidade             | Texto (10) | unit            |     Não      |
 | Quantidade unitária |   Número   | quantity        |     Não      |
+
+### Tabela de unidades de produtos: **product_units**
+
+| Dado                |    Tipo    | Campo na Tabela    | Permite Nulo |
+| ------------------- | :--------: | ------------------ | :----------: |
+| ID da unidade       | Texto (10) | unit_id            |     Não      |
+| Descrição           | Texto (50) | description        |     Não      |
+| Descrição no plural | Texto (50) | plural_description |     Não      |
 
 O cadastro do produto consiste na seguinte estrutura:
 
@@ -332,6 +340,68 @@ O processo de patch é praticamente a mesma coisa que o post, porém todos os ca
 ```ts
 export type ProductSubGroupPatchPayload = Partial<ProductSubGroupPostPayload>;
 ```
+
+---
+
+**UNIDADES DE PRODUTOS**
+
+Os IDs das unidades de produtos, não são geradas automaticamente pela aplicação como os demais cadastros e não tem um id externo **(external id)**, esse id será fornecido no cadastro.
+
+As unidades serão referenciadas nas [tabelas de preços](./TABELA_PRECOS.md), por esse ID. Como **UN**, **PCT**, **GRF**...
+
+Estrutura interna na aplicação:
+
+```ts
+export type ProductUnit = {
+  id: string; // id da unidade (UN, PCT, GRF, BB...)
+  description: string; // descrição (unidade, pacote, garrafa, bombona...)
+  pluralDescription: string; // plural (unidades, pacotes, garrafas, bombonas...)
+};
+```
+
+#### Payload de cadastro
+
+`POST /products/units`
+
+```ts
+export type ProductUnitPostPayload = {
+  id: string;
+  description: string;
+  pluralDescription: string;
+};
+```
+
+```json
+// Exemplo
+{
+  "id": "PC",
+  "description": "Peça",
+  "pluralDescription": "peças"
+}
+```
+
+`PATCH /products/units/{:id}`
+
+```ts
+export type ProductUnitPatchPayload = {
+  description?: string;
+  pluralDescription?: string;
+};
+```
+
+```json
+// Exemplo: PATCH /products/units/PCT
+{
+  "description": "Pacote",
+  "pluralDescription": "Pacotes"
+}
+```
+
+##### Validações importantes
+
+- O id deve ser sempre em maiúsculo, caso o usuário mande como "un", devemos armazenar como "UN".
+
+- O id da unidade é único, não podem haver 2 ou mais cadastrados com o mesmo ID, se alguém tentar cadastrar um registro com um ID já cadastrado, devemos retornar status **409 (conflict)**;
 
 ---
 
