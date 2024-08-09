@@ -63,59 +63,187 @@ A manutenção dos cadastros das tabelas de preços é realizado pelo ERP, porta
 | id da tabela  |   Número   | ID interno da tabela                    | price_table_id  |     Não      |
 | id do produto |   Número   | ID interno do produto                   | product_id      |     Não      |
 | unidade       | Texto (10) | Unidade do produto                      | unit            |     Não      |
-| preço         |   Número   | Preço padrão do produto                 | price           |     Não      |
-| até 1         |   Número   | Primeira quantidade "Até X"             | until_1         |     Não      |
-| preço 1       |   Número   | Preço do produto da primeira quantidade | price_1         |     Não      |
+| moeda         | Texto (3)  | Moeda                                   | currency_id     |     Não      |
+| preço         |   Número   | Preço padrão do produto                 | price           |     Sim      |
+| até 1         |   Número   | Primeira quantidade "Até X"             | until_1         |     Sim      |
+| preço 1       |   Número   | Preço do produto da primeira quantidade | price_1         |     Sim      |
 | até 2         |   Número   | Segunda quantidade "Até X"              | until_2         |     Sim      |
 | preço 2       |   Número   | Preço do produto da segunda quantidade  | price_2         |     Sim      |
 | até 3         |   Número   | Terceira quantidade "Até X"             | until_3         |     Sim      |
 | preço 3       |   Número   | Preço do produto da terceira quantidade | price_3         |     Sim      |
+| até 4         |   Número   | Quarta quantidade "Até X"               | until_4         |     Sim      |
+| preço 4       |   Número   | Preço do produto da quarta quantidade   | price_4         |     Sim      |
 
 ## Representação em JSON
 
 ### Tabela de preços
 
+Representação interna na aplicação:
+
+```ts
+export enum PriceTableType {
+  Simple = 1,
+  ByQuantity = 2,
+}
+
+export type PriceTable = {
+  id: number;
+  externalId: string;
+  description: string;
+  type: PriceTableType;
+};
+```
+
 #### Payload de cadastro
 
-`// POST /price-tables`
+`POST /price-tables`
+
+```ts
+export type PriceTablePostPayload = {
+  externalId: string;
+  description: string;
+  type: PriceTableType;
+};
+```
 
 ```json
+// Exemplo
 {
-  "external_id": "",
-  "description": "",
-  "type": 0
+  "externalId": "001",
+  "description": "Venda parcelada",
+  "type": "Simple"
 }
 ```
 
-#### Payload de retorno de cadastro ou leitura
+`PATCH /price-table/{:id([0-9]+)}`
 
-`// GET /price-table/{id}`
+```ts
+export type PriceTablePatchPayload = Partial<PriceTablePostPayload>;
+```
 
 ```json
+// Exemplo PATCH /price-table/124
 {
-  "id": 0,
-  "externalId": "",
-  "description": "",
-  "type": 0
+  "description": "Vendas parcelada",
+  "type": "ByQuantity"
 }
 ```
 
 ### Itens da tabela de preços
 
-### Payload de cadastro
+Representação interna na aplicação:
 
-`// POST /price-table/{id}/itens`
+```ts
+export type PriceTableItem = {
+  productId: number; // Id do produto
+  price: number; // Preço
+  unit: string; // Unidade
+  currencyId: string; // ID da Moeda
+  until1: number; // Primeira quantidade: até x
+  price1: number; // Preço da primeira quantidade
+  until2: number; // Segunda quantidade: até x
+  price2: number; // Preço da segunda quantidade
+  until3: number; // Terceira quantidade: até x
+  price3: number; // Preço da terceira quantidade
+  until4: number; // Quarta quantidade: até x
+  price4: number; // Preço da quarta quantidade
+};
+```
+
+#### Payload de cadastro
+
+**IMPORTANTE:** Algumas validações mudam dependendo do tipo da tabela.
+
+- Se o campo **currencyId** não for informado, devemos assumir o padrão **BRL**.
+- Um produto pode estar varias vezes na mesma tabela, contanto que em unidades diferentes. Não podemos permitir um produto com unidades repetidas ou com unidades não cadastradas no sistema.
+- Se a tabela for do tipo "simples": O campo **price** é obrigatório e deve ser maior que zero, caso a tabela for por quantidade esse campo não precisa ser validado.
+- Se a tabela for do tipo "por quantidade": Os campos **until1** e **price1** são obrigatórios e devem ser maiores que zero, os demais campos **untilX** e **priceX** são opcionais, mas devemos observar as regras abaixo.
+  - Os pares devem ser informados: Se o campo **until2** for preenchido, então **price2** também deve estar
+  - Não se pode pular sequências: Exemplo, não podemos informar o **until4** e **price4**, sem informar os anteriores.
+
+`POST /price-table/{:priceTableId([0-9]+)}/items`
+
+```ts
+export type PriceTableItemPostPayload = {
+  productId: number;
+  unit: string;
+  currencyId?: string;
+  price?: number;
+  until1?: number;
+  price1?: number;
+  until2?: number;
+  price2?: number;
+  until3?: number;
+  price3?: number;
+  until4?: number;
+  price4?: number;
+};
+```
 
 ```json
+// Exemplo de item para uma tabela de preço simples
+// POST /price-table/789/items
 {
-  "productId": 0,
-  "price": 0,
-  "unit": "",
-  "until1": 0,
-  "price1": 0,
-  "until2": 0,
-  "price2": 0,
-  "until3": 0,
-  "price3": 0
+  "productId": 124,
+  "price": 440, // R$ 4,40
+  "unit": "UN",
+  "currencyId": "BRL"
+}
+```
+
+```json
+// Exemplo de item para uma tabela de preço por quantidade
+// POST /price-table/789/items
+{
+  "productId": 124,
+  "unit": "UN",
+  "currencyId": "BRL",
+  "until1": 10,
+  "price1": 397, // R$ 3,97
+  "until2": 50,
+  "price2": 365 // R$ 3,65
+}
+```
+
+`PATCH /price-table/{:priceTableId([0-9]+)}/item/{:productId([0-9]+)}/unit/{:unit}`
+
+Perceba que na rota, além do id do produto, também há a unidade.
+Isso porque um produto pode estar na tabela em diferentes unidades, por isso precisamos saber para qual unidade está sendo realizado o patch.
+
+```ts
+export type PriceTableItemPatchPayload = {
+  currencyId?: string;
+  price?: number;
+  until1?: number;
+  price1?: number;
+  until2?: number;
+  price2?: number;
+  until3?: number;
+  price3?: number;
+  until4?: number;
+  price4?: number;
+};
+```
+
+```json
+// Exemplo de item para uma tabela de preço simples
+// POST /price-table/789/item/124/unit/UN
+{
+  "productId": 124,
+  "price": 440, // R$ 4,40
+  "currencyId": "BRL"
+}
+```
+
+```json
+// Exemplo de item para uma tabela de preço por quantidade
+// POST /price-table/789/item/124/unit/UN
+{
+  "productId": 124,
+  "currencyId": "BRL",
+  "until1": 10,
+  "price1": 397, // R$ 3,97
+  "until2": 50,
+  "price2": 365 // R$ 3,65
 }
 ```
