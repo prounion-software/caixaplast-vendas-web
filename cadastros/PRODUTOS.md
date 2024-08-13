@@ -42,7 +42,7 @@ Por tanto, não há necessidade de criar áreas de cadastro ou pesquisa na inter
 | Dado                   |    Tipo     | Campo na Tabela  | Permite Nulo |
 | ---------------------- | :---------: | ---------------- | :----------: |
 | ID do tipo de material |   Número    | material_type_id |     Não      |
-| ID no ERP              | Texto (10)  | id_externo       |     Não      |
+| ID no ERP              | Texto (10)  | external_id      |     Não      |
 | Descrição              | Texto (100) | description      |     Nao      |
 
 ### Tabela de grupos de produtos: **product_groups**
