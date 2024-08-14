@@ -38,9 +38,10 @@ Para uma visão geral sobre a arquitetura, veja o [System Design](arquitetura/SY
 ### Cadastros
 
 - [Produtos](cadastros/PRODUTOS.md)
-- Representantes
 - [Moedas](cadastros/MOEDAS.md)
 - [Tabelas de preços](cadastros/TABELA_PRECOS.md)
+- [Vendedores](cadastros/VENDEDORES.md)
+- Representantes
 - Carteiras de clientes
 - Pré-cadastro de clientes
 
