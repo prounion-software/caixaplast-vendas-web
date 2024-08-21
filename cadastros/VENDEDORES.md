@@ -4,7 +4,7 @@ O conceito de vendedores nesse sistema é importado do [Sistema PROC](https://si
 
 É comum em sistemas de vendas, o vendedor ser o próprio usuário logado na ferramenta ao realizar um pedido. Aqui um vendedor não necessariamente é um usuário também.
 
-Mais adiante os relacionamentos entre usuário e vendedor ficarão mais claros.
+Os relacionamentos entre usuário e vendedor ficarão mais claros nas definições de [usuários](./USUARIOS.md)
 
 ## Estrutura de dados
 
@@ -12,13 +12,13 @@ O cadastro de vendedores é algo bastante simples.
 
 ### Tabela de vendedores: **sellers**
 
-| Dado                       | Tipo          | Campo na Tabela         | Permite Nulo | Observação            |
-| -------------------------- | ------------- | ----------------------- | :----------: | --------------------- |
-| Id do vendedor             | Numero        | seller_id               |     Não      | Chave primária        |
-| Id externo                 | Texto(10)     | external_id             |     Não      |                       |
-| Nome                       | Texto(50)     | name                    |     Não      |                       |
-| Percentual desconto máximo | Numero(12, 6) | max_discount_percentage |     Sim      | Valor padrão 0 (zero) |
-| E-mail                     | Texto(100)    | email                   |     Sim      |                       |
+| Dado                       | Tipo          | Campo na Tabela         | Permite Nulo | Observação                                     |
+| -------------------------- | ------------- | ----------------------- | :----------: | ---------------------------------------------- |
+| Id do vendedor             | Numero        | seller_id               |     Não      | Chave primária                                 |
+| Id externo                 | Texto(10)     | external_id             |     Não      |                                                |
+| Nome                       | Texto(50)     | name                    |     Não      |                                                |
+| Percentual desconto máximo | Numero(12, 6) | max_discount_percentage |     Sim      | Valor padrão 0 (zero)                          |
+| E-mail                     | Texto(100)    | email                   |     Sim      | Quando informado, deve ser único na plataforma |
 
 ## Representação em objetos e JSON
 
