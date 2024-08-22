@@ -108,20 +108,25 @@ export type PasswordUpdatePayload = {
 
 Apenas administradores podem realizar essa ação.
 
-Para promover: `POST /user/:id([0-9]+)/admin`
-Para rebaixar: `DELETE /user/:id([0-9]+)/admin`
+**Para promover:** `POST /user/:id([0-9]+)/admin`
+
+**Para rebaixar:** `DELETE /user/:id([0-9]+)/admin`
 
 #### Associoando um representante com um vendedor
 
 A associação entre representante e vendedor é bastante simples também.
 É claro que é necessário verificar se tanto usuário quanto o vendedor existem.
 
-Para associar: `POST /user/:userId([0-9]+)/seller/:sellerId([0-9]+)`
+**Para associar:** `POST /user/:userId([0-9]+)/seller/:sellerId([0-9]+)`
+
 Se esse representante já estiver associado com o vendedor, nenhuma ação será necessária, basta retornar 204 (no content).
+
 Se a associação for criada, deve retornar 201 (created).
 
-Para desassociar: `DELETE /user/:userId([0-9]+)/seller/:sellerId([0-9]+)`
+**Para desassociar:** `DELETE /user/:userId([0-9]+)/seller/:sellerId([0-9]+)`
+
 Se esse representante não estiver associado com o vendedor, nenhuma ação será necessária.
+
 O retorno dessa rota deve ser 204 (no content).
 
 Apenas administradores devem ter acesso nessas ações.
