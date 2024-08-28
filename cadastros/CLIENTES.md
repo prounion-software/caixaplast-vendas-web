@@ -245,6 +245,55 @@ export type CustomerPostPayload = {
 export type CustomerPatchPayload = Partial<CustomerPostPayload>;
 ```
 
+`GET /customers`
+
+Como é uma entidade com muitos relacionamentos, e muitos deles são usados apenas no momento do pedido. Na listagem não precisamos de todos os campos, teremos uma versão reduzida desses dados.
+
+```ts
+export type CustomerListItem = {
+  id: number;
+  externalId: string;
+  name: string; // Razão Social
+  tradeName: string; // Fantasia
+  cnpj: string; // CNPJ ou CPF
+};
+```
+
+`GET /customer/:id([0-9]+)`
+
+Quando o acesso é direto ao cliente, aí retornamos as informações comples, pois certamente trata-se de um pedido ou manutenção de cadastro.
+
+```ts
+export type Customer = {
+  id: number;
+  externalId: string;
+  personType: string;
+  name: string;
+  tradeName: string;
+  cnpj: string;
+  ie: string;
+  email: string;
+  additionalInfo: string;
+  suframa: string;
+  deliveryInfo: string;
+  substTributaria: boolean;
+  consumidorFinal: boolean;
+  optanteSimples: boolean;
+  orgaoPublico: boolean;
+  contacts: CustomerContact[];
+  addresses: CustomerAddress[];
+  financialPosition: CustomerFinancialPosition | null;
+  customerType: CustomerType | null;
+  carrier: Carrier | null;
+  priceTable: PriceTable | null;
+  seller: Seller | null;
+  agentSeller: User | null;
+  paymentMethod: PaymentMethod | null;
+  paymentTerm: PaymentTerm | null;
+  deliveryRoute: DeliveryRoute | null;
+};
+```
+
 ### Endereços do cliente
 
 `POST /customer/:customerId([0-9]+)/addresses`
