@@ -7,7 +7,7 @@ Assim como foi apresentado em [produtos](./PRODUTOS.md), primeiro iremos apresen
 
 ## Estrutura de dados
 
-### Tabela de tipos de clientes: **custumer_types**
+### Tabela de tipos de clientes: **customer_types**
 
 | Dado       |    Tipo     | Campo na Tabela  | Permite Nulo | Observação                      |
 | ---------- | :---------: | ---------------- | :----------: | ------------------------------- |
@@ -15,7 +15,7 @@ Assim como foi apresentado em [produtos](./PRODUTOS.md), primeiro iremos apresen
 | ID no ERP  | Texto (10)  | external_id      |     Não      |                                 |
 | Descrição  | Texto (100) | description      |     Não      |                                 |
 
-### Tabela de endereços dos clientes: **custumer_addresses**
+### Tabela de endereços dos clientes: **customer_addresses**
 
 | Dado          |    Tipo     | Campo na Tabela | Permite Nulo | Observação                      |
 | ------------- | :---------: | --------------- | :----------: | ------------------------------- |
@@ -49,7 +49,7 @@ Aqui se refere ao meio de pagamento (cobrança) como cheque, cartão, boleto, pi
 | ID no ERP  | Texto (10)  | external_id       |     Não      |                                 |
 | Descrição  | Texto (100) | description       |     Não      |                                 |
 
-### Tabela de tipos de cobrança: **payment_terms**
+### Tabela de formas de pagamento: **payment_terms**
 
 Aqui se refere a forma de pagamento como à vista, à prazo, no carnê...
 
@@ -61,12 +61,14 @@ Aqui se refere a forma de pagamento como à vista, à prazo, no carnê...
 
 ### Tabela de posição financeira: **customer_financial_positions**
 
-| Dado               |    Tipo    | Campo na Tabela  | Permite Nulo | Observação           |
-| ------------------ | :--------: | ---------------- | :----------: | -------------------- |
-| ID do cliente      |   Número   | customer_id      |     Não      |                      |
-| Limite de crédito  |   Número   | credit_limit     |     Não      | Em centavos          |
-| Crédito disponível |   Número   | credit_available |     Não      | Em centavos          |
-| Bloqueado          | Número (1) | blocked          |     Não      | 0 = False / 1 = True |
+Só deve haver um registro por cliente, portanto o código do cliente deve fazer parte da chave da tabela
+
+| Dado               |    Tipo    | Campo na Tabela  | Permite Nulo | Observação               |
+| ------------------ | :--------: | ---------------- | :----------: | ------------------------ |
+| ID do cliente      |   Número   | customer_id      |     Não      | Chave primária da tabela |
+| Limite de crédito  |   Número   | credit_limit     |     Não      | Em centavos              |
+| Crédito disponível |   Número   | credit_available |     Não      | Em centavos              |
+| Bloqueado          | Número (1) | blocked          |     Não      | 0 = False / 1 = True     |
 
 ### Tabela de rotas de entrega: **delivery_routes**
 
@@ -90,6 +92,9 @@ Aqui se refere a forma de pagamento como à vista, à prazo, no carnê...
 
 ### Tabela de clientes: **customers**
 
+É possível notar que alguns campos estão em português, pois são termos que não tem conversão direta para o inglês.
+Tentar converter poderia tirar do contexto.
+
 | Dado               |    Tipo     | Campo na Tabela   | Permite Nulo | Observação                      |
 | ------------------ | :---------: | ----------------- | :----------: | ------------------------------- |
 | ID interno         |   Número    | customer_id       |     Não      | Chave primária, auto-incremento |
@@ -99,7 +104,7 @@ Aqui se refere a forma de pagamento como à vista, à prazo, no carnê...
 | Fantasia           | Texto (100) | trade_name        |     Não      |                                 |
 | CNPJ/CPF           | Texto (100) | cnpj              |     Não      |                                 |
 | IE/RG              | Texto (20)  | ie                |     Sim      |                                 |
-| Tipo de cliente    |   Número    | customer_type_id  |     Sim      | Ref. custumer_types             |
+| Tipo de cliente    |   Número    | customer_type_id  |     Sim      | Ref. customer_types             |
 | E-mail             | Texto (100) | email             |     Sim      |                                 |
 | Observações        | Texto (500) | additional_info   |     Sim      |                                 |
 | Suframa            | Texto (20)  | suframa           |     Sim      |                                 |
@@ -117,3 +122,184 @@ Aqui se refere a forma de pagamento como à vista, à prazo, no carnê...
 | Órgão público      |   Número    | orgao_publico     |     Sim      | 0 = False / 1 = True            |
 
 ## Estrutura de dados na aplicação
+
+A maior parte dos cadastros é a mesma forma do que foi feito até aqui na aplicação.
+
+### Transportadoras
+
+`POST /carriers`
+
+```ts
+export type CarrierPostPayload = {
+  externalId: string;
+  description: string;
+};
+```
+
+`PATCH /carrier/:id([0-9]+)`
+
+```ts
+export type CarrierPatchPayload = Partial<CarrierPostPayload>;
+```
+
+### Tipos de cobrança
+
+`POST /payment-methods`
+
+```ts
+export type PaymentMethodPostPayload = {
+  externalId: string;
+  description: string;
+};
+```
+
+`PATCH /payment-method/:id([0-9]+)`
+
+```ts
+export type PaymentMethodPatchPayload = Partial<PaymentMethodPostPayload>;
+```
+
+### Formas de pagamento
+
+`POST /payment-terms`
+
+```ts
+export type PaymentTermPostPayload = {
+  externalId: string;
+  description: string;
+};
+```
+
+`PATCH /payment-method/:id([0-9]+)`
+
+```ts
+export type PaymentTermPatchPayload = Partial<PaymentTermPostPayload>;
+```
+
+### Rotas de entrega
+
+`POST /delivery-routes`
+
+```ts
+export type DeliveryRoutePostPayload = {
+  externalId: string;
+  description: string;
+};
+```
+
+```ts
+export type DeliveryRoutePatchPayload = Partial<DeliveryRoutePostPayload>;
+```
+
+### Tipos de clientes
+
+`POST /customers/customers-types`
+
+```ts
+export type CustomerTypePostPayload = {
+  externalId: string;
+  description: string;
+};
+```
+
+`PATCH /customers/customers-type/:id([0-9]+)`
+
+```ts
+export type CustomerTypePatchPayload = Partial<CustomerTypePostPayload>;
+```
+
+### Clientes
+
+`POST /customers`
+
+```ts
+export type CustomerPostPayload = {
+  externalId: string;
+  personType: string; // As opções são apenas F ou J
+  name: string; // Razão Social
+  tradeName: string; // Fantasia
+  cnpj: string; // CNPJ ou CPF
+  ie?: string; // IE ou RG
+  email?: string;
+  additionalInfo?: string;
+  suframa?: string;
+  deliveryInfo?: string;
+  substTributaria?: boolean; // Padrão = false
+  consumidorFinal?: boolean; // Padrão = false
+  optanteSimples?: boolean; // Padrão = false
+  orgaoPublico?: boolean; // Padrão = false
+  customerTypeId?: number; // ID do tipo de cliente
+  carrierId?: number; // ID da transportadora
+  priceTableId?: number; // ID da tabela de preços
+  sellerId?: number; // ID do vendedor
+  agentSellerId?: number; // ID do representante
+  paymentMethodId?: number; // ID da cobrança
+  paymentTermId?: number; // ID da forma de pagamento
+  deliveryRouteId?: number; // ID da transportadora
+};
+```
+
+`PATCH /customer/:id([0-9]+)`
+
+```ts
+export type CustomerPatchPayload = Partial<CustomerPostPayload>;
+```
+
+### Endereços do cliente
+
+`POST /customer/:customerId([0-9]+)/addresses`
+
+```ts
+export type CustomerAddressPostPayload = {
+  externalId?: string;
+  type: string; // As opções são: business, delivery ou financial
+  streetName: string;
+  streetNumber?: string;
+  additionalInfo?: string;
+  neighborhood?: string;
+  postalCode?: string;
+  state?: string;
+  ibge?: number;
+};
+```
+
+`PATCH /customer/:customerId([0-9]+)/address/:addressId([0-9]+)`
+
+```ts
+export type CustomerAddressPatchPayload = Partial<CustomerAddressPostPayload>;
+```
+
+### Posição financeira do cliente
+
+Essa rota é diferente das demais, só tem o `patch`.
+Se não houver o registro na tabela, o registro é criado. Se houver, ele é atualizado.
+
+`PATCH /customer/:customerId([0-9]+)/financial-position`
+
+```ts
+export type CustomerFinancialPositionPostPayload = {
+  creditLimit: number;
+  creditAvailable: number;
+  blocked: boolean;
+};
+```
+
+### Contatos do cliente
+
+`POST /customer/:customerId([0-9]+)/contacts`
+
+```ts
+export type CustomerContactPostPayload = {
+  externalId?: string;
+  name: string;
+  departament?: string;
+  phoneNumber?: string;
+  email?: string;
+};
+```
+
+`PATCH /customer/:customerId([0-9]+)/contact/:contactId([0-9]+s)`
+
+```ts
+export type CustomerContactPatchPayload = Partial<CustomerContactPostPayload>;
+```
