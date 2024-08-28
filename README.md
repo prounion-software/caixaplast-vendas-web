@@ -42,6 +42,7 @@ Para uma visão geral sobre a arquitetura, veja o [System Design](arquitetura/SY
 - [Tabelas de preços](cadastros/TABELA_PRECOS.md)
 - [Vendedores](cadastros/VENDEDORES.md)
 - [Usuários](cadastros/USUARIOS.md)
+- [Clientes](cadastros/CLIENTES.md)
 - Carteiras de clientes
 - Pré-cadastro de clientes
 
