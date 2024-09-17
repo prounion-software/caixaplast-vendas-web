@@ -261,7 +261,7 @@ export type CustomerListItem = {
 
 `GET /customer/:id([0-9]+)`
 
-Quando o acesso é direto ao cliente, aí retornamos as informações comples, pois certamente trata-se de um pedido ou manutenção de cadastro.
+Quando o acesso é direto ao cliente, aí retornamos as informações completas, pois certamente trata-se de um pedido ou manutenção de cadastro.
 
 ```ts
 export type Customer = {

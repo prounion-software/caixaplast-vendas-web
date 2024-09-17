@@ -43,7 +43,7 @@ Para uma visão geral sobre a arquitetura, veja o [System Design](arquitetura/SY
 - [Vendedores](cadastros/VENDEDORES.md)
 - [Usuários](cadastros/USUARIOS.md)
 - [Clientes](cadastros/CLIENTES.md)
-- Carteiras de clientes
+- [Carteiras de clientes](cadastros/CARTEIRA_CLIENTES.md)
 - Pré-cadastro de clientes
 
 ### Pedidos
